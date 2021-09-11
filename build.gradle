@@ -1,0 +1,21 @@
+    plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.10'
+
+    id 'net.mamoe.mirai-console' version '2.7.0'
+}
+
+group = 'org.mecca'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    mavenCentral()
+
+}
+
+    dependencies{
+        compile(
+                'net.sf.json-lib:json-lib:2.4:jdk15'
+        )
+    }
