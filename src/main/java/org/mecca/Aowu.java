@@ -7,6 +7,9 @@ import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
+import net.mamoe.mirai.message.data.MessageChainBuilder;
+import net.mamoe.mirai.message.data.QuoteReply;
+import org.mecca.Func.PingFunc;
 import org.mecca.api.DailyEnglish;
 import org.mecca.api.ICPCheck;
 import org.mecca.api.TodayInHistory;
@@ -35,11 +38,29 @@ public final class Aowu extends JavaPlugin {
 
         GlobalEventChannel.INSTANCE.subscribeAlways(FriendMessageEvent.class,(FriendMessageEvent event)->{
             String command = event.getMessage().contentToString();
+
+            /**
+             * Ping
+             */
+            if (command.contains("/Ping")||command.contains("/ping")){
+                MessageChain messages=new MessageChainBuilder()
+                        .append(new QuoteReply(event.getMessage()))
+                        .append(PingFunc.run(command.substring(6)).toString())
+                        .build();
+                event.getSubject().sendMessage(messages);
+            }
+
+
             /**
              * 备案查询
              */
             if (command.contains("/ICP")){
-                event.getSubject().sendMessage(ICPCheck.Get(command.substring(5)).toString());
+                MessageChain messages=new MessageChainBuilder()
+                        .append(new QuoteReply(event.getMessage()))
+                        .append(ICPCheck.Get(command.substring(5)).toString())
+                        .build();
+
+                event.getSubject().sendMessage(messages);
             }
             /**
              * 手动触发 每日英语和那年今日
@@ -54,20 +75,20 @@ public final class Aowu extends JavaPlugin {
              * 每日英语和那年今日
              */
             //判断计数器与当前日期是否一致
-            if (countHistory== DateUtil.getDateByDay()) {
-                //那年今日
-                if (DateUtil.getTimeByHour()>=10){
-                    getLogger().info("TodayInHistory Sended!!!");
-                    event.getSubject().sendMessage(TodayInHistory.Get());
-                }
-                if (DateUtil.isEndOfMonth(countHistory)) {
-                    getLogger().info("countHistory set to 1!!");
-                    countHistory=1;
-                }else {
-                    getLogger().info("countHistory ++");
-                    countHistory++; //日期加1
-                }
-            }
+//            if (countHistory== DateUtil.getDateByDay()) {
+//                //那年今日
+//                if (DateUtil.getTimeByHour()>=10){
+//                    getLogger().info("TodayInHistory Sended!!!");
+//                    event.getSubject().sendMessage(TodayInHistory.Get());
+//                }
+//                if (DateUtil.isEndOfMonth(countHistory)) {
+//                    getLogger().info("countHistory set to 1!!");
+//                    countHistory=1;
+//                }else {
+//                    getLogger().info("countHistory ++");
+//                    countHistory++; //日期加1
+//                }
+//            }
 
             if (countEnglish== DateUtil.getDateByDay()) {
                 //每日英语
@@ -92,12 +113,29 @@ public final class Aowu extends JavaPlugin {
 
         });
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class,(GroupMessageEvent event)->{
+            String command = event.getMessage().contentToString();
+            /**
+             * Ping
+             */
+            if (command.contains("/Ping")||command.contains("/ping")){
+                MessageChain messages=new MessageChainBuilder()
+                        .append(new QuoteReply(event.getMessage()))
+                        .append(PingFunc.run(command.substring(6)).toString())
+                        .build();
+                event.getSubject().sendMessage(messages);
+            }
+
+
             /**
              * 备案查询
              */
-            String command = event.getMessage().contentToString();
             if (command.contains("/ICP")){
-                event.getSubject().sendMessage(ICPCheck.Get(command.substring(5)).toString());
+                MessageChain messages=new MessageChainBuilder()
+                        .append(new QuoteReply(event.getMessage()))
+                        .append(ICPCheck.Get(command.substring(5)).toString())
+                        .build();
+
+                event.getSubject().sendMessage(messages);
             }
             /**
              * 手动触发 每日英语和那年今日
@@ -112,20 +150,20 @@ public final class Aowu extends JavaPlugin {
              * 每日英语和那年今日
              */
             //判断计数器与当前日期是否一致
-            if (countHistory== DateUtil.getDateByDay()) {
-                //那年今日
-                if (DateUtil.getTimeByHour()>=10){
-                    getLogger().info("TodayInHistory Sended!!!");
-                    event.getSubject().sendMessage(TodayInHistory.Get());
-                }
-                if (DateUtil.isEndOfMonth(countHistory)) {
-                    getLogger().info("countHistory set to 1!!! ");
-                    countHistory=1;
-                }else {
-                    getLogger().info("countHistory ++");
-                    countHistory++; //日期加1
-                }
-            }
+//            if (countHistory== DateUtil.getDateByDay()) {
+//                //那年今日
+//                if (DateUtil.getTimeByHour()>=10){
+//                    getLogger().info("TodayInHistory Sended!!!");
+//                    event.getSubject().sendMessage(TodayInHistory.Get());
+//                }
+//                if (DateUtil.isEndOfMonth(countHistory)) {
+//                    getLogger().info("countHistory set to 1!!! ");
+//                    countHistory=1;
+//                }else {
+//                    getLogger().info("countHistory ++");
+//                    countHistory++; //日期加1
+//                }
+//            }
 
             if (countEnglish== DateUtil.getDateByDay()) {
                 //每日英语
@@ -143,91 +181,12 @@ public final class Aowu extends JavaPlugin {
 
             }
 
-
-
-
-
-
-
-
-
         });
 
 
 
 
-//        /**
-//         * 每日英语和那年今日
-//         */
-//        GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class,(GroupMessageEvent event) -> {
-//            //判断计数器与当前日期是否一致
-//            if (countHistory== DateUtil.getDateByDay()) {
-//                //那年今日
-//                if (DateUtil.getTimeByHour()>=10){
-//                    getLogger().info("TodayInHistory Sended!!!");
-//                    event.getSubject().sendMessage(TodayInHistory.Get());
-//                }
-//                if (DateUtil.isEndOfMonth(countHistory)) {
-//                    getLogger().info("countHistory set to 1!!");
-//                    countHistory=1;
-//                }else {
-//                    getLogger().info("countHistory ++");
-//                    countHistory++; //日期加1
-//                }
-//            }
-//
-//            if (countEnglish== DateUtil.getDateByDay()) {
-//                //每日英语
-//                if (DateUtil.getTimeByHour()<10){
-//                    getLogger().info("DailyEnglish Sended!!!");
-//                    event.getSubject().sendMessage(DailyEnglish.Get());
-//                }
-//                if (DateUtil.isEndOfMonth(countEnglish)){
-//                    getLogger().info("countEnglish set to 1!!");
-//                    countEnglish=1;
-//                }else {
-//                    getLogger().info("countEnglish ++");
-//                    countEnglish++;
-//                }
-//
-//            }
-//        });
-//        GlobalEventChannel.INSTANCE.subscribeAlways(FriendMessageEvent.class,(FriendMessageEvent event) -> {
-//            //判断计数器与当前日期是否一致
-//            if (countHistory== DateUtil.getDateByDay()) {
-//                //那年今日
-//                if (DateUtil.getTimeByHour()>=10){
-//                    getLogger().info("TodayInHistory Sended!!!");
-//                    event.getSubject().sendMessage(TodayInHistory.Get());
-//                }
-//                if (DateUtil.isEndOfMonth(countHistory)) {
-//                    getLogger().info("countHistory set to 1!!");
-//                    countHistory=1;
-//                }else {
-//                    getLogger().info("countHistory ++");
-//                    countHistory++; //日期加1
-//                }
-//            }
-//
-//            if (countEnglish== DateUtil.getDateByDay()) {
-//                //每日英语
-//                if (DateUtil.getTimeByHour()<10){
-//                    getLogger().info("DailyEnglish Sended!!!");
-//                    event.getSubject().sendMessage(DailyEnglish.Get());
-//                }
-//                if (DateUtil.isEndOfMonth(countEnglish)){
-//                    getLogger().info("countEnglish set to 1!!");
-//                    countEnglish=1;
-//                }else {
-//                    getLogger().info("countEnglish ++");
-//                    countEnglish++;
-//                }
-//
-//            }
-//        });
 
 
     }
-
-
 }
