@@ -25,7 +25,7 @@ public final class Aowu extends JavaPlugin {
     public int countEnglish= DateUtil.getDateByDay();  //若数值等于当前日期则发送English  初始日期为插件运行日期
     public int countHistory= DateUtil.getDateByDay();  //若数值等于当前日期则发送History  初始日期为插件运行日期
     public ICPCheck icpCheck= new ICPCheck();
-
+    int countMsg=0;
 
 
 
@@ -38,6 +38,7 @@ public final class Aowu extends JavaPlugin {
 
         GlobalEventChannel.INSTANCE.subscribeAlways(FriendMessageEvent.class,(FriendMessageEvent event)->{
             String command = event.getMessage().contentToString();
+            countMsg++;
 
             /**
              * Ping
@@ -92,9 +93,12 @@ public final class Aowu extends JavaPlugin {
 
             if (countEnglish== DateUtil.getDateByDay()) {
                 //每日英语
-                if (DateUtil.getTimeByHour()<10){
-                    getLogger().info("DailyEnglish Sended!!!");
-                    event.getSubject().sendMessage(DailyEnglish.Get());
+//                if (DateUtil.getTimeByHour()<10){
+                //每70条信息发一次
+                if (countMsg%100==0){
+                        getLogger().info("DailyEnglish Sended!!!");
+                        event.getSubject().sendMessage(DailyEnglish.Get());
+                    }
                 }
                 if (DateUtil.isEndOfMonth(countEnglish)){
                     getLogger().info("countEnglish set to 1!!");
@@ -104,7 +108,7 @@ public final class Aowu extends JavaPlugin {
                     countEnglish++;
                 }
 
-            }
+
 
 
 
@@ -167,18 +171,19 @@ public final class Aowu extends JavaPlugin {
 
             if (countEnglish== DateUtil.getDateByDay()) {
                 //每日英语
-                if (DateUtil.getTimeByHour()<10){
+//                if (DateUtil.getTimeByHour()<10){
+                //每70条信息发一次
+                if (countMsg%70==0){
                     getLogger().info("DailyEnglish Sended!!!");
                     event.getSubject().sendMessage(DailyEnglish.Get());
                 }
-                if (DateUtil.isEndOfMonth(countEnglish)){
-                    getLogger().info("countEnglish set to 1!!");
-                    countEnglish=1;
-                }else {
-                    getLogger().info("countEnglish ++");
-                    countEnglish++;
-                }
-
+            }
+            if (DateUtil.isEndOfMonth(countEnglish)){
+                getLogger().info("countEnglish set to 1!!");
+                countEnglish=1;
+            }else {
+                getLogger().info("countEnglish ++");
+                countEnglish++;
             }
 
         });
