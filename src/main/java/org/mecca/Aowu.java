@@ -179,6 +179,29 @@ public final class Aowu extends JavaPlugin {
             if (event.getMessage().contentToString().contains("/TodayInHis")){
                 event.getSubject().sendMessage(TodayInHistory.Get()+"\n测试命令!!! 每日十点前发送那年今日!!");
             }
+
+            /**
+             * 解密加密字符串加盐/不加盐
+             */
+            if (command.matches("/EncodeWithSalt.*")){
+                String[] split = command.split("/EncodeWithSalt ");
+                String[] cmdrs=split[1].split(" ");
+                event.getSubject().sendMessage(DeEnCodeString.EncodeWithSalt(cmdrs[0],cmdrs[1]));
+            }
+            if (command.matches("/EncodeWithoutSalt .*")){
+                String[] split = command.split("/EncodeWithoutSalt ");
+                event.getSubject().sendMessage(DeEnCodeString.EncodeWithoutSalt(split[1]));
+            }if (command.matches("/DecodeWithSalt.*")){
+                String[] split = command.split("/DecodeWithSalt ");
+                String[] cmdrs=split[1].split(" ");
+                event.getSubject().sendMessage(DeEnCodeString.DecodeWithSalt(cmdrs[0],cmdrs[1]));
+            }
+            if (command.matches("/DecodeWithoutSalt .*")){
+                String[] split = command.split("/DecodeWithoutSalt ");
+                event.getSubject().sendMessage(DeEnCodeString.DecodeWithoutSalt(split[1]));
+            }
+
+
             /**
              * 每日英语和那年今日
              */

@@ -4,8 +4,9 @@ public class TestInputFunc {
 
     public static void main(String[] args) {
         String command ="/EncodeWithSalt 方明轩 112";
-
-        String[] split = command.split("/EncodeWithSalt ");
+        String[] split = new String[0];
+        if (command.matches("/EncodeWithSalt .*"))
+         split= command.split("/EncodeWithSalt ");
 
         for (String s : split) {
             System.out.println(s);
