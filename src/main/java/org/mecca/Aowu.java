@@ -11,6 +11,7 @@ import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.QuoteReply;
 import org.mecca.Func.PingFunc;
 import org.mecca.api.DailyEnglish;
+import org.mecca.api.DeEnCodeString;
 import org.mecca.api.ICPCheck;
 import org.mecca.api.TodayInHistory;
 import org.mecca.util.DateUtil;
@@ -72,10 +73,38 @@ public final class Aowu extends JavaPlugin {
             if (event.getMessage().contentToString().contains("/TodayInHis")){
                 event.getSubject().sendMessage(TodayInHistory.Get()+"\n测试命令!!! 每日十点前发送那年今日!!");
             }
+
+
             /**
-             * 每日英语和那年今日
+             * 解密加密字符串加盐/不加盐
              */
-            //判断计数器与当前日期是否一致
+            if (command.matches("/EncodeWithSalt.*")){
+                String[] split = command.split("/EncodeWithSalt ");
+                String[] cmdrs=split[1].split(" ");
+                event.getSubject().sendMessage(DeEnCodeString.EncodeWithSalt(cmdrs[0],cmdrs[1]));
+            }
+            if (command.matches("/EncodeWithoutSalt .*")){
+                String[] split = command.split("/EncodeWithoutSalt ");
+                event.getSubject().sendMessage(DeEnCodeString.EncodeWithoutSalt(split[1]));
+            }if (command.matches("/DecodeWithSalt.*")){
+                String[] split = command.split("/DecodeWithSalt ");
+                String[] cmdrs=split[1].split(" ");
+                event.getSubject().sendMessage(DeEnCodeString.DecodeWithSalt(cmdrs[0],cmdrs[1]));
+            }
+            if (command.matches("/DecodeWithoutSalt .*")){
+                String[] split = command.split("/DecodeWithoutSalt ");
+                event.getSubject().sendMessage(DeEnCodeString.DecodeWithoutSalt(split[1]));
+            }
+
+
+
+
+
+
+//            /**
+//             * 每日英语和那年今日
+//             */
+//            //判断计数器与当前日期是否一致
 //            if (countHistory== DateUtil.getDateByDay()) {
 //                //那年今日
 //                if (DateUtil.getTimeByHour()>=10){
@@ -91,22 +120,22 @@ public final class Aowu extends JavaPlugin {
 //                }
 //            }
 
-            if (countEnglish== DateUtil.getDateByDay()) {
-                //每日英语
-//                if (DateUtil.getTimeByHour()<10){
-                //每70条信息发一次
-                if (countMsg%100==0){
-                        getLogger().info("DailyEnglish Sended!!!");
-                        event.getSubject().sendMessage(DailyEnglish.Get());
-                    }
-                }
-                if (DateUtil.isEndOfMonth(countEnglish)){
-                    getLogger().info("countEnglish set to 1!!");
-                    countEnglish=1;
-                }else {
-                    getLogger().info("countEnglish ++");
-                    countEnglish++;
-                }
+//            if (countEnglish== DateUtil.getDateByDay()) {
+//                //每日英语
+////                if (DateUtil.getTimeByHour()<10){
+//                //每70条信息发一次
+//                if (countMsg%100==0){
+//                        getLogger().info("DailyEnglish Sended!!!");
+//                        event.getSubject().sendMessage(DailyEnglish.Get());
+//                    }
+//                }
+//                if (DateUtil.isEndOfMonth(countEnglish)){
+//                    getLogger().info("countEnglish set to 1!!");
+//                    countEnglish=1;
+//                }else {
+//                    getLogger().info("countEnglish ++");
+//                    countEnglish++;
+//                }
 
 
 
@@ -169,22 +198,22 @@ public final class Aowu extends JavaPlugin {
 //                }
 //            }
 
-            if (countEnglish== DateUtil.getDateByDay()) {
-                //每日英语
-//                if (DateUtil.getTimeByHour()<10){
-                //每70条信息发一次
-                if (countMsg%70==0){
-                    getLogger().info("DailyEnglish Sended!!!");
-                    event.getSubject().sendMessage(DailyEnglish.Get());
-                }
-            }
-            if (DateUtil.isEndOfMonth(countEnglish)){
-                getLogger().info("countEnglish set to 1!!");
-                countEnglish=1;
-            }else {
-                getLogger().info("countEnglish ++");
-                countEnglish++;
-            }
+//            if (countEnglish== DateUtil.getDateByDay()) {
+//                //每日英语
+////                if (DateUtil.getTimeByHour()<10){
+//                //每150条信息发一次
+//                if (countMsg%150==0){
+//                    getLogger().info("DailyEnglish Sended!!!");
+//                    event.getSubject().sendMessage(DailyEnglish.Get());
+//                }
+//            }
+//            if (DateUtil.isEndOfMonth(countEnglish)){
+//                getLogger().info("countEnglish set to 1!!");
+//                countEnglish=1;
+//            }else {
+//                getLogger().info("countEnglish ++");
+//                countEnglish++;
+//            }
 
         });
 
